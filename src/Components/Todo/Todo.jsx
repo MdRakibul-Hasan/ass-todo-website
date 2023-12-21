@@ -1,57 +1,54 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Services/AuthProvider";
-import Swal from "sweetalert2";
-import { WithContext as ReactTags } from 'react-tag-input';
-import './AddProduct.css';
-import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 
+const Todo = () => {
+    const {loading, user} = useContext(AuthContext);
+    const [descriptionFrom, setDescriptionFrom] = useState("");
+    const navigate = useNavigate();
 
-const AddProduct = () => {
-  const {loading, user} = useContext(AuthContext);
-  const [descriptionFrom, setDescriptionFrom] = useState("");
-  const navigate = useNavigate();
-  
+    
 
-
-const handleAddProduct = event => {
+const handleAddTodo = event => {
     event.preventDefault();
 
 
 const form = event.target;
 
-const productName = form.productName.value;
-const externalLinks = form.link.value;
-const category = form.option.value;
-const productDetails = descriptionFrom;
-const image = form.image.value;
-const OwnerEmail = form.OwnerEmail.value;
-const upvote = [{}];
-const productOwner = user?.displayName;
-const reviews = [{}];
-const type = "pending";
+const email = user?.email;
+const title = form.TodoName.value;
+const description = descriptionFrom;
+const deadline = form.deadline.value;
+const priority = form.priority.value;
+
+// const productDetails = descriptionFrom;
+// const image = form.image.value;
+// const OwnerEmail = form.OwnerEmail.value;
+// const upvote = [{}];
+// const productOwner = user?.displayName;
+// const reviews = [{}];
+// const type = "pending";
 const timestamp = new Date();
 
 
 
-const newProduct = {productName, externalLinks, upvote, type, 
-  category, productDetails, image, OwnerEmail,
-  timestamp, productOwner, reviews}
-console.log(newProduct);
+const newTodo = {email, title, description, deadline, priority}
+console.log(newTodo);
 
-fetch('https://ass12-crud-server3.vercel.app/techProduct', {
+fetch('http://localhost:5000/todo', {
     method: 'POST',
     headers: {
         'content-type' : 'application/json'
     },
-    body: JSON.stringify(newProduct)
+    body: JSON.stringify(newTodo)
 })
 .then(res=> res.json())
 .then(data =>{
     
     if(data.insertedId){
-      const notify2 = () => toast.success('Product upload is Successful', {
+      const notify2 = () => toast.success('List added is Successful', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -63,21 +60,21 @@ fetch('https://ass12-crud-server3.vercel.app/techProduct', {
         });
     notify2();
 
-    setTimeout(() => {
-      navigate('/dashboard/myproduct');
-    }, 3000);
+    // setTimeout(() => {
+    //   navigate('/dashboard/myproduct');
+    // }, 3000);
     
     }
   
 })
 
-} 
-
-  return (
+}
+    return (
+        
         <div className="px-20 py-14"><ToastContainer />
             <h2 className=" text-center font-bold text-2xl pb-10">My Todo List</h2>
 
-<form onSubmit={handleAddProduct}>
+<form onSubmit={handleAddTodo}>
 {/* product name and brand name */}
 <div className="md:flex">
 <div className="form-control md:w-1/2">
@@ -165,4 +162,4 @@ gap-2 ">
     );
 };
 
-export default AddProduct;
+export default Todo;

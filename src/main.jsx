@@ -27,6 +27,7 @@ import MyProduct from './Components/Dashboard/MyProduct.jsx';
 import Allusers from './Components/Dashboard/Allusers.jsx';
 import ProductReviewQueue from './Components/Dashboard/ProductReviewQueue.jsx';
 import ReportedContent from './Components/Dashboard/ReportedContent.jsx';
+import Todo from './Components/Todo/Todo.jsx';
 
 
 
@@ -41,6 +42,12 @@ const router = createBrowserRouter([
         path: '/',
         element: <Home></Home>,
         loader: ()=>fetch('/data.json')
+
+      },
+      {
+        path: '/todo',
+        element: <Todo></Todo>,
+         loader: ()=>fetch('http://localhost:5000/todo'),
 
       },
       {
